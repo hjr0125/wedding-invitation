@@ -35,6 +35,7 @@ jobs:
         run: npm run build
         env:
           NEXT_PUBLIC_KAKAO_MAP_APP_KEY: ${{ secrets.NEXT_PUBLIC_KAKAO_MAP_APP_KEY }}
+          NEXT_PUBLIC_SITE_URL: https://hjr0125.github.io/wedding-invitation
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
