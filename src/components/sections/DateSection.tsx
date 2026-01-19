@@ -184,6 +184,7 @@ const WeddingDay = styled.div`
 const WeddingDate = styled.p`
   font-size: 1.25rem;
   margin-top: 2rem;
+  white-space: pre-line;
 `;
 
 export default DateSection; 

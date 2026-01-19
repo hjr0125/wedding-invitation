@@ -33,7 +33,7 @@ export const weddingConfig = {
   main: {
     title: "Wedding Invitation",
     image: withBasePath("/images/ha0h-1fsi-bqt3.jpg"),
-    date: "2026년 1월 31일 11시 30분",
+    date: "2026년 1월 31일\n11시 30분",
     venue: "까델루뽀"
   },
 
@@ -50,7 +50,7 @@ export const weddingConfig = {
     day: 31,
     hour: 11,
     minute: 30,
-    displayDate: "2026.01.31 SAT AM 11:30",
+    displayDate: "2026.01.31 SAT\nAM 11:30",
   },
 
   // 장소 정보

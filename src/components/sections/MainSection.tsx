@@ -175,6 +175,7 @@ const MainTitle = styled.h1`
 const DateText = styled.p`
   font-size: 1.25rem;
   margin-bottom: 0.5rem;
+  white-space: pre-line;
   
   /* 기본 크기에서 세로 길이가 짧을 때 */
   @media (min-width: 769px) and (max-height: 700px) {
