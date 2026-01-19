@@ -1,6 +1,8 @@
 const uniqueIdentifier = "JWK-WEDDING-TEMPLATE-V1";
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://hjr0125.github.io/wedding-invitation").replace(/\/$/, "");
 const withBasePath = (path: string) => (basePath ? `${basePath}${path}` : path);
+const withSiteUrl = (path: string) => `${siteUrl}${withBasePath(path)}`;
 
 // 갤러리 레이아웃 타입 정의
 type GalleryLayout = "scroll" | "grid";
@@ -15,9 +17,9 @@ interface GalleryConfig {
 export const weddingConfig = {
   // 메타 정보
   meta: {
-    title: "Wedding Invitation",
-    description: "결혼식 초대장",
-    ogImage: withBasePath("/images/ha0h-1fsi-bqt3.jpg"),
+    title: "한재륜 ❤️ 박세화 결혼합니다",
+    description: "1월 31일 11시 30분",
+    ogImage: withSiteUrl("/images/ha0h-1fsi-bqt3.jpg"),
     noIndex: true,
     _jwk_watermark_id: uniqueIdentifier,
   },
