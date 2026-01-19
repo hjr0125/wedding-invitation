@@ -16,17 +16,11 @@ const VenueSection = dynamic(() => import('../src/components/sections/VenueSecti
   loading: () => <div style={{ padding: '4rem 1.5rem', textAlign: 'center' }}>로딩 중...</div>
 });
 
-const GallerySection = dynamic(() => import('../src/components/sections/GallerySection'), {
-  loading: () => <div style={{ padding: '4rem 1.5rem', textAlign: 'center' }}>로딩 중...</div>
-});
-
 const InvitationSection = dynamic(() => import('../src/components/sections/InvitationSection'));
 const RsvpSection = dynamic(() => import('../src/components/sections/RsvpSection'));
-const Footer = dynamic(() => import('../src/components/sections/Footer'));
 
 export default function Home() {
   // 갤러리 위치 설정
-  const galleryPosition = weddingConfig.gallery.position || 'middle';
   const showRsvp = weddingConfig.rsvp?.enabled ?? true;
 
   // 실제 렌더링되는 섹션들의 순서를 계산하여 색상 인덱스 결정
@@ -38,16 +32,8 @@ export default function Home() {
     sections.push('date'); // DateSection  
     sections.push('venue'); // VenueSection
     
-    if (galleryPosition === 'middle') {
-      sections.push('gallery-middle'); // GallerySection (middle)
-    }
-    
     if (showRsvp) {
       sections.push('rsvp'); // RsvpSection
-    }
-    
-    if (galleryPosition === 'bottom') {
-      sections.push('gallery-bottom'); // GallerySection (bottom)
     }
     
     // 각 섹션에 색상 인덱스 할당 (0부터 시작하여 번갈아가며)
@@ -57,7 +43,7 @@ export default function Home() {
     });
     
     return colorMap;
-  }, [galleryPosition, showRsvp]);
+  }, [showRsvp]);
 
   return (
     <main>
@@ -65,10 +51,7 @@ export default function Home() {
       <InvitationSection bgColor={sectionColorMap['invitation']} />
       <DateSection bgColor={sectionColorMap['date']} />
       <VenueSection bgColor={sectionColorMap['venue']} />
-      {galleryPosition === 'middle' && <GallerySection bgColor={sectionColorMap['gallery-middle']} />}
       {showRsvp && <RsvpSection bgColor={sectionColorMap['rsvp']} />}
-      {galleryPosition === 'bottom' && <GallerySection bgColor={sectionColorMap['gallery-bottom']} />}
-      <Footer />
     </main>
   );
 }

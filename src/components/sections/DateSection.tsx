@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { weddingConfig } from '../../config/wedding-config';
 
@@ -9,15 +9,6 @@ interface DateSectionProps {
 }
 
 const DateSection = ({ bgColor = 'white' }: DateSectionProps) => {
-  const [timeLeft, setTimeLeft] = useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-  });
-  
-  const [isWeddingPassed, setIsWeddingPassed] = useState(false);
-  
   // 달력 생성 로직
   const generateCalendar = () => {
     const { year, month, day } = weddingConfig.date;
@@ -61,39 +52,6 @@ const DateSection = ({ bgColor = 'white' }: DateSectionProps) => {
     return calendarDays;
   };
   
-  useEffect(() => {
-    const calculateTimeLeft = () => {
-      const weddingDate = new Date(
-        weddingConfig.date.year,
-        weddingConfig.date.month - 1,
-        weddingConfig.date.day,
-        weddingConfig.date.hour,
-        weddingConfig.date.minute
-      );
-      
-      const now = new Date();
-      const difference = weddingDate.getTime() - now.getTime();
-      
-      if (difference > 0) {
-        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
-        const minutes = Math.floor((difference / 1000 / 60) % 60);
-        const seconds = Math.floor((difference / 1000) % 60);
-        
-        setTimeLeft({ days, hours, minutes, seconds });
-        setIsWeddingPassed(false);
-      } else {
-        // 결혼식이 지났음
-        setIsWeddingPassed(true);
-      }
-    };
-    
-    calculateTimeLeft();
-    const timer = setInterval(calculateTimeLeft, 1000);
-    
-    return () => clearInterval(timer);
-  }, []);
-
   return (
     <DateSectionContainer $bgColor={bgColor}>
       <SectionTitle>일정</SectionTitle>
@@ -119,40 +77,6 @@ const DateSection = ({ bgColor = 'white' }: DateSectionProps) => {
           {generateCalendar()}
         </CalendarGrid>
       </CalendarCard>
-      
-      {!isWeddingPassed && (
-        <CountdownContainer>
-          <CountdownTitle>결혼까지 남은 시간</CountdownTitle>
-          
-          <CountdownWrapper>
-            <CountdownItem>
-              <CountdownValue>{timeLeft.days}</CountdownValue>
-              <CountdownLabel>일</CountdownLabel>
-            </CountdownItem>
-            <VerticalDivider />
-            <CountdownItem>
-              <CountdownValue>
-                {timeLeft.hours < 10 ? `0${timeLeft.hours}` : timeLeft.hours}
-              </CountdownValue>
-              <CountdownLabel>시간</CountdownLabel>
-            </CountdownItem>
-            <VerticalDivider />
-            <CountdownItem>
-              <CountdownValue>
-                {timeLeft.minutes < 10 ? `0${timeLeft.minutes}` : timeLeft.minutes}
-              </CountdownValue>
-              <CountdownLabel>분</CountdownLabel>
-            </CountdownItem>
-            <VerticalDivider />
-            <CountdownItem>
-              <CountdownValue>
-                {timeLeft.seconds < 10 ? `0${timeLeft.seconds}` : timeLeft.seconds}
-              </CountdownValue>
-              <CountdownLabel>초</CountdownLabel>
-            </CountdownItem>
-          </CountdownWrapper>
-        </CountdownContainer>
-      )}
       
       <WeddingDate>
         {weddingConfig.main.date}
@@ -255,99 +179,6 @@ const WeddingDay = styled.div`
   justify-content: center;
   margin: 0 auto;
   font-size: 0.875rem;
-`;
-
-const CountdownContainer = styled.div`
-  margin: 2rem 0;
-  width: 100%;
-  
-  @media (max-width: 600px) {
-    overflow-x: none;
-  }
-`;
-
-const CountdownTitle = styled.h3`
-  font-size: 1.25rem;
-  margin-bottom: 1.5rem;
-  font-weight: 500;
-`;
-
-const CountdownWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: nowrap;
-  min-width: fit-content;
-  margin: 0 auto;
-  
-  @media (max-width: 400px) {
-    transform: scale(0.95);
-    transform-origin: center center;
-  }
-
-  @media (max-width: 370px) {
-    transform: scale(0.8);
-    transform-origin: center center;
-  }
-
-  @media (max-width: 340px) {
-    transform: scale(0.65);
-    transform-origin: center center;
-  }
-  
-  @media (max-width: 300px) {
-    transform: scale(0.5);
-    transform-origin: center center;
-  }
-`;
-
-const CountdownItem = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 0 1rem;
-  
-  @media (max-width: 480px) {
-    padding: 0 0.75rem;
-  }
-`;
-
-const CountdownValue = styled.div`
-  font-size: 2rem;
-  font-weight: 500;
-  color: var(--secondary-color);
-  font-family: 'Courier New', monospace;
-  min-width: 3rem;
-  text-align: center;
-  display: inline-block;
-  
-  @media (max-width: 480px) {
-    font-size: 1.85rem;
-    min-width: 2.5rem;
-  }
-`;
-
-const CountdownLabel = styled.div`
-  font-size: 0.875rem;
-  color: var(--text-medium);
-  margin-top: 0.25rem;
-  white-space: nowrap;
-`;
-
-const VerticalDivider = styled.div`
-  height: 4.5rem;
-  width: 1px;
-  min-width: 1px;
-  flex-shrink: 0;
-  background-color: var(--secondary-color);
-  margin: 0 0.75rem;
-  opacity: 0.8;
-  
-  @media (max-width: 480px) {
-    height: 3.75rem;
-    margin: 0 0.25rem;
-    width: 0.5px;
-  }
 `;
 
 const WeddingDate = styled.p`

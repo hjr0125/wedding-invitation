@@ -13,6 +13,9 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="stylesheet" href={weddingConfig.fonts.googleCssUrl} />
         <title>{weddingConfig.meta.title}</title>
         <meta name="description" content={weddingConfig.meta.description} />
         <meta property="og:title" content={weddingConfig.meta.title} />

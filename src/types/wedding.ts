@@ -22,6 +22,8 @@ export interface Venue {
   mapZoom: string;
   kakaoMapLevel?: number;
   mapNaverCoordinates?: string;
+  kakaoPlaceId?: string;
+  tmapShareUrl?: string;
   transportation: {
     subway: string;
     bus: string;

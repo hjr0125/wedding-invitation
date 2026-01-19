@@ -1,4 +1,6 @@
 const uniqueIdentifier = "JWK-WEDDING-TEMPLATE-V1";
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+const withBasePath = (path: string) => (basePath ? `${basePath}${path}` : path);
 
 // 갤러리 레이아웃 타입 정의
 type GalleryLayout = "scroll" | "grid";
@@ -13,19 +15,26 @@ interface GalleryConfig {
 export const weddingConfig = {
   // 메타 정보
   meta: {
-    title: "신랑 ❤️ 신부의 결혼식에 초대합니다",
+    title: "Wedding Invitation",
     description: "결혼식 초대장",
-    ogImage: "/images/ha0h-1fsi-bqt3.jpg",
+    ogImage: withBasePath("/images/ha0h-1fsi-bqt3.jpg"),
     noIndex: true,
     _jwk_watermark_id: uniqueIdentifier,
+  },
+  // 폰트 설정 (Google Fonts)
+  fonts: {
+    googleCssUrl:
+      "https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;600;700&family=Xanh+Mono:ital,wght@0,400;1,400&display=swap",
+    bodyFamily: "'Noto Serif KR', 'Noto Sans KR', serif",
+    displayFamily: "'Xanh Mono', 'Times New Roman', serif",
   },
 
   // 메인 화면
   main: {
     title: "Wedding Invitation",
-    image: "/images/ha0h-1fsi-bqt3.jpg",
-    date: "2026년 5월 16일 토요일 12시 30분",
-    venue: "웨딩홀 이름"
+    image: withBasePath("/images/ha0h-1fsi-bqt3.jpg"),
+    date: "2026년 1월 31일 11시 30분",
+    venue: "까델루뽀"
   },
 
   // 소개글
@@ -37,32 +46,34 @@ export const weddingConfig = {
   // 결혼식 일정
   date: {
     year: 2026,
-    month: 5,
-    day: 16,
-    hour: 12,
+    month: 1,
+    day: 31,
+    hour: 11,
     minute: 30,
-    displayDate: "2026.05.16 SAT PM 12:30",
+    displayDate: "2026.01.31 SAT AM 11:30",
   },
 
   // 장소 정보
   venue: {
-    name: "웨딩홀 이름",
-    address: "서울특별시 강남구 테헤란로 123\n웨딩홀 이름",
-    tel: "02-1234-5678",
-    naverMapId: "웨딩홀 이름", // 네이버 지도 검색용 장소명
+    name: "까델루뽀",
+    address: "서울 종로구 자하문로16길 5-5 1층",
+    tel: "",
+    naverMapId: "까델루뽀", // 네이버 지도 검색용 장소명
     coordinates: {
-      latitude: 37.5665,
-      longitude: 126.9780,
+      latitude: 37.581815,
+      longitude: 126.971422,
     },
-    placeId: "123456789", // 네이버 지도 장소 ID
+    placeId: "13517637", // 네이버 지도 장소 ID
+    kakaoPlaceId: "8578395", // 카카오 장소 ID
     mapZoom: "17", // 네이버 지도 URL용 줌 레벨
     kakaoMapLevel: 4, // 카카오 지도 레벨 (1이 가장 확대)
     mapNaverCoordinates: "14141300,4507203,15,0,0,0,dh", // 네이버 지도 길찾기 URL용 좌표 파라미터 (구 형식)
+    tmapShareUrl: "https://tmap.life/bc388b0a",
     transportation: {
-      subway: "지하철역 1번 출구에서 도보 5분",
-      bus: "간선\n 101, 102, 103\n지선\n 1234, 5678",
+      subway: "경복궁역 3번 출구에서 직진 도보 10분",
+      bus: "3번 출구 앞 버스정류장 탑승 → 한 정거장 하차\n세븐일레븐까지 100m 도보 후 좌측 첫 번째 골목",
     },
-    parking: "건물 지하 주차장 이용 가능 (2시간 무료)",
+    parking: "맞은편 세븐일레븐 골목 진입 후 좌측 첫 번째 골목\n'미래한국재단' 주차장 이용 가능 (지정석 제외)\n주차장 협소·발렛 없음 — 만차 시 인근 공영주차장 이용\n주말/공휴일 도로 통제 가능 — 20~30분 일찍 출발 부탁드립니다",
     
   },
 
@@ -71,15 +82,15 @@ export const weddingConfig = {
     layout: "grid" as GalleryLayout, // "scroll" 또는 "grid" 선택
     position: "bottom" as GalleryPosition, // "middle" (현재 위치) 또는 "bottom" (맨 하단) 선택
     images: [
-      "/images/gallery/image1.jpg",
-      "/images/gallery/image2.jpg",
-      "/images/gallery/image3.jpg",
-      "/images/gallery/image4.jpg",
-      "/images/gallery/image5.jpg",
-      "/images/gallery/image6.jpg",
-      "/images/gallery/image7.jpg",
-      "/images/gallery/image8.jpg",
-      "/images/gallery/image9.jpg",
+      withBasePath("/images/gallery/image1.jpg"),
+      withBasePath("/images/gallery/image2.jpg"),
+      withBasePath("/images/gallery/image3.jpg"),
+      withBasePath("/images/gallery/image4.jpg"),
+      withBasePath("/images/gallery/image5.jpg"),
+      withBasePath("/images/gallery/image6.jpg"),
+      withBasePath("/images/gallery/image7.jpg"),
+      withBasePath("/images/gallery/image8.jpg"),
+      withBasePath("/images/gallery/image9.jpg"),
     ],
   } as GalleryConfig,
 
@@ -87,16 +98,16 @@ export const weddingConfig = {
   invitation: {
     message: "한 줄기 별빛이 되어 만난 인연\n평생을 함께 걸어가려 합니다.\n\n소중한 분들의 축복 속에\n저희 두 사람이 첫 걸음을 내딛습니다.\n\n귀한 시간 내어 함께해 주신다면\n그 어떤 축복보다 값진 선물이 될 것입니다.",
     groom: {
-      name: "신랑이름",
+      name: "한재륜",
       label: "아들",
-      father: "신랑아버지",
-      mother: "신랑어머니",
+      father: "한시환",
+      mother: "김미영",
     },
     bride: {
-      name: "신부이름",
+      name: "박세화",
       label: "딸",
-      father: "신부아버지",
-      mother: "신부어머니",
+      father: "",
+      mother: "장우심",
     },
   },
 

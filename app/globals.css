@@ -24,7 +24,7 @@ body {
 }
 
 body {
-  font-family: 'MaruBuri', sans-serif;
+  font-family: 'Noto Serif KR', 'Noto Sans KR', serif;
   color: var(--text-dark);
   line-height: 1.6;
 }

@@ -19,55 +19,6 @@ const watermarkId = weddingConfig.meta._jwk_watermark_id || 'JWK-NonCommercial';
  */
 
 export const GlobalStyle = createGlobalStyle`
-  /* 폰트 로딩 전에 적용될 스타일 */
-  @font-face {
-    font-family: 'MaruBuri';
-    src: url('/fonts/MaruBuri-ExtraLight.ttf') format('truetype');
-    font-weight: 200;
-    font-style: normal;
-    font-display: block; /* 폰트 로딩될 때까지 텍스트를 보이지 않게 함 */
-  }
-  
-  @font-face {
-    font-family: 'MaruBuri';
-    src: url('/fonts/MaruBuri-Light.ttf') format('truetype');
-    font-weight: 300;
-    font-style: normal;
-    font-display: block;
-  }
-  
-  @font-face {
-    font-family: 'MaruBuri';
-    src: url('/fonts/MaruBuri-Regular.ttf') format('truetype');
-    font-weight: 400;
-    font-style: normal;
-    font-display: block;
-  }
-  
-  @font-face {
-    font-family: 'MaruBuri';
-    src: url('/fonts/MaruBuri-SemiBold.ttf') format('truetype');
-    font-weight: 600;
-    font-style: normal;
-    font-display: block;
-  }
-  
-  @font-face {
-    font-family: 'MaruBuri';
-    src: url('/fonts/MaruBuri-Bold.ttf') format('truetype');
-    font-weight: 700;
-    font-style: normal;
-    font-display: block;
-  }
-
-  @font-face {
-    font-family: 'PlayfairDisplay';
-    src: url('/fonts/PlayfairDisplay-Italic.ttf') format('truetype');
-    font-weight: normal;
-    font-style: italic;
-    font-display: block;
-  }
-  
   /* 컨텐츠가 바로 보이지만 폰트가 로드되면 레이아웃이 바뀌는 것을 방지 */
   html, body {
     visibility: visible;
@@ -76,7 +27,7 @@ export const GlobalStyle = createGlobalStyle`
   }
   
   body {
-    font-family: 'MaruBuri', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+    font-family: ${weddingConfig.fonts.bodyFamily};
     color: #333333;
     margin: 0;
     padding: 0;

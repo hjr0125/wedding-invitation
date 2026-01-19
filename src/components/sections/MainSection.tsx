@@ -89,8 +89,8 @@ const MainContent = styled.div`
 `;
 
 const MainTitle = styled.h1`
-  font-family: 'PlayfairDisplay', 'Times New Roman', serif;
-  font-style: italic;
+  font-family: ${weddingConfig.fonts.displayFamily};
+  font-style: normal;
   font-size: 3rem;
   min-height: 3rem;
   letter-spacing: 2px;

@@ -153,10 +153,14 @@ const VenueSection = ({ bgColor = 'white' }: VenueSectionProps) => {
   const navigateToKakao = () => {
     if (typeof window !== 'undefined') {
       // 카카오맵 앱/웹으로 연결
+      if (weddingConfig.venue.kakaoPlaceId) {
+        window.open(`https://place.map.kakao.com/${weddingConfig.venue.kakaoPlaceId}`, '_blank');
+        return;
+      }
+
       const lat = weddingConfig.venue.coordinates.latitude;
       const lng = weddingConfig.venue.coordinates.longitude;
       const name = encodeURIComponent(weddingConfig.venue.name);
-      const address = encodeURIComponent(weddingConfig.venue.address);
       const kakaoMapsUrl = `https://map.kakao.com/link/to/${name},${lat},${lng}`;
       window.open(kakaoMapsUrl, '_blank');
     }
@@ -174,9 +178,9 @@ const VenueSection = ({ bgColor = 'white' }: VenueSectionProps) => {
       
       // 앱이 설치되어 있지 않을 경우를 대비해 약간의 지연 후 TMAP 웹사이트로 이동
       setTimeout(() => {
-        // TMAP이 설치되어 있지 않으면 TMAP 웹사이트 메인으로 이동
-        if(document.hidden) return; // 앱이 실행되었으면 아무것도 하지 않음
-        window.location.href = 'https://tmap.co.kr';
+        // TMAP이 설치되어 있지 않으면 공유 링크 또는 메인으로 이동
+        if (document.hidden) return;
+        window.location.href = weddingConfig.venue.tmapShareUrl || 'https://tmap.co.kr';
       }, 1000);
     }
   };
@@ -188,7 +192,9 @@ const VenueSection = ({ bgColor = 'white' }: VenueSectionProps) => {
       <VenueInfo>
         <VenueName>{weddingConfig.venue.name}</VenueName>
         <VenueAddress>{formatTextWithLineBreaks(weddingConfig.venue.address)}</VenueAddress>
-        <VenueTel href={`tel:${weddingConfig.venue.tel}`}>{weddingConfig.venue.tel}</VenueTel>
+        {weddingConfig.venue.tel && (
+          <VenueTel href={`tel:${weddingConfig.venue.tel}`}>{weddingConfig.venue.tel}</VenueTel>
+        )}
       </VenueInfo>
       
       {mapError ? (

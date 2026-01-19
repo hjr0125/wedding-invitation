@@ -1,11 +1,18 @@
 /** @type {import('next').NextConfig} */
+const basePath = process.env.NODE_ENV === 'production' ? '/wedding-invitation' : '';
+
 const nextConfig = {
+  output: 'export',
+  trailingSlash: true,
+  basePath,
+  assetPrefix: basePath || undefined,
   compiler: {
     styledComponents: true,
   },
   
   // 이미지 최적화 설정
   images: {
+    unoptimized: true,
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
@@ -22,6 +29,7 @@ const nextConfig = {
   // 환경 변수 설정
   env: {
     NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
+    NEXT_PUBLIC_BASE_PATH: basePath,
   },
   
   // 캐시 정책을 더 스마트하게 설정

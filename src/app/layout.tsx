@@ -16,20 +16,9 @@ export default function RootLayout({
     <html lang="ko">
       {}
       <head>
-        <link
-          rel="preload"
-          href="/fonts/PlayfairDisplay-Italic.ttf" 
-          as="font"
-          type="font/ttf"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="preload"
-          href="/fonts/MaruBuri-Regular.ttf" 
-          as="font"
-          type="font/ttf"
-          crossOrigin="anonymous"
-        />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="stylesheet" href={weddingConfig.fonts.googleCssUrl} />
         {}
         <meta name="generator" content={`Wedding-Template-${watermarkId}`} />
         <meta name="description" content={metaDescription} />
