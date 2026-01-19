@@ -18,6 +18,7 @@ const VenueSection = dynamic(() => import('../src/components/sections/VenueSecti
 
 const InvitationSection = dynamic(() => import('../src/components/sections/InvitationSection'));
 const RsvpSection = dynamic(() => import('../src/components/sections/RsvpSection'));
+const ShareSection = dynamic(() => import('../src/components/sections/ShareSection'));
 
 export default function Home() {
   // 갤러리 위치 설정
@@ -31,6 +32,7 @@ export default function Home() {
     sections.push('invitation'); // InvitationSection
     sections.push('date'); // DateSection  
     sections.push('venue'); // VenueSection
+    sections.push('share'); // ShareSection
     
     if (showRsvp) {
       sections.push('rsvp'); // RsvpSection
@@ -51,6 +53,7 @@ export default function Home() {
       <InvitationSection bgColor={sectionColorMap['invitation']} />
       <DateSection bgColor={sectionColorMap['date']} />
       <VenueSection bgColor={sectionColorMap['venue']} />
+      <ShareSection bgColor={sectionColorMap['share']} />
       {showRsvp && <RsvpSection bgColor={sectionColorMap['rsvp']} />}
     </main>
   );

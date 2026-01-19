@@ -1,6 +1,8 @@
 const uniqueIdentifier = "JWK-WEDDING-TEMPLATE-V1";
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://hjr0125.github.io/wedding-invitation").replace(/\/$/, "");
 const withBasePath = (path: string) => (basePath ? `${basePath}${path}` : path);
+const withSiteUrl = (path: string) => `${siteUrl}${withBasePath(path)}`;
 
 // 갤러리 레이아웃 타입 정의
 type GalleryLayout = "scroll" | "grid";
@@ -35,6 +37,12 @@ export const weddingConfig = {
     image: withBasePath("/images/ha0h-1fsi-bqt3.jpg"),
     date: "2026년 1월 31일\n11시 30분",
     venue: "까델루뽀"
+  },
+  share: {
+    title: "한재륜 ❤️ 박세화 결혼합니다",
+    description: "1월 31일 11시 30분",
+    imageUrl: withSiteUrl("/images/ha0h-1fsi-bqt3.jpg"),
+    linkUrl: siteUrl,
   },
 
   // 소개글
