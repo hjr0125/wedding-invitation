@@ -22,7 +22,6 @@ const GallerySection = dynamic(() => import('../src/components/sections/GalleryS
 
 const InvitationSection = dynamic(() => import('../src/components/sections/InvitationSection'));
 const RsvpSection = dynamic(() => import('../src/components/sections/RsvpSection'));
-const AccountSection = dynamic(() => import('../src/components/sections/AccountSection'));
 const Footer = dynamic(() => import('../src/components/sections/Footer'));
 
 export default function Home() {
@@ -47,8 +46,6 @@ export default function Home() {
       sections.push('rsvp'); // RsvpSection
     }
     
-    sections.push('account'); // AccountSection
-    
     if (galleryPosition === 'bottom') {
       sections.push('gallery-bottom'); // GallerySection (bottom)
     }
@@ -70,7 +67,6 @@ export default function Home() {
       <VenueSection bgColor={sectionColorMap['venue']} />
       {galleryPosition === 'middle' && <GallerySection bgColor={sectionColorMap['gallery-middle']} />}
       {showRsvp && <RsvpSection bgColor={sectionColorMap['rsvp']} />}
-      <AccountSection bgColor={sectionColorMap['account']} />
       {galleryPosition === 'bottom' && <GallerySection bgColor={sectionColorMap['gallery-bottom']} />}
       <Footer />
     </main>

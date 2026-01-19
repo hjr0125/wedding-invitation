@@ -1,18 +1,3 @@
-export interface AccountInfo {
-  bank: string;
-  number: string;
-  holder: string;
-}
-
-export interface WeddingAccountConfig {
-  groom: AccountInfo;
-  bride: AccountInfo;
-  groomFather: AccountInfo;
-  groomMother: AccountInfo;
-  brideFather: AccountInfo;
-  brideMother: AccountInfo;
-}
-
 export interface ShuttleContact {
   name: string;
   tel: string;
@@ -35,6 +20,7 @@ export interface Venue {
   };
   placeId: string;
   mapZoom: string;
+  kakaoMapLevel?: number;
   mapNaverCoordinates?: string;
   transportation: {
     subway: string;

@@ -55,31 +55,15 @@ export const weddingConfig = {
       longitude: 126.9780,
     },
     placeId: "123456789", // 네이버 지도 장소 ID
-    mapZoom: "17", // 지도 줌 레벨
+    mapZoom: "17", // 네이버 지도 URL용 줌 레벨
+    kakaoMapLevel: 4, // 카카오 지도 레벨 (1이 가장 확대)
     mapNaverCoordinates: "14141300,4507203,15,0,0,0,dh", // 네이버 지도 길찾기 URL용 좌표 파라미터 (구 형식)
     transportation: {
       subway: "지하철역 1번 출구에서 도보 5분",
       bus: "간선\n 101, 102, 103\n지선\n 1234, 5678",
     },
     parking: "건물 지하 주차장 이용 가능 (2시간 무료)",
-    // 신랑측 배차 안내
-    groomShuttle: {
-      location: "신랑측 배차 출발지",
-      departureTime: "오전 10시 30분 출발",
-      contact: {
-        name: "담당자명",
-        tel: "010-1234-5678"
-      }
-    },
-    // 신부측 배차 안내
-    brideShuttle: {
-      location: "신부측 배차 출발지",
-      departureTime: "오전 11시 출발",
-      contact: {
-        name: "담당자명",
-        tel: "010-9876-5432"
-      }
-    }
+    
   },
 
   // 갤러리
@@ -116,40 +100,6 @@ export const weddingConfig = {
     },
   },
 
-  // 계좌번호
-  account: {
-    groom: {
-      bank: "은행명",
-      number: "123-456-789012",
-      holder: "신랑이름",
-    },
-    bride: {
-      bank: "은행명",
-      number: "987-654-321098",
-      holder: "신부이름",
-    },
-    groomFather: {
-      bank: "은행명",
-      number: "111-222-333444",
-      holder: "신랑아버지",
-    },
-    groomMother: {
-      bank: "은행명",
-      number: "555-666-777888",
-      holder: "신랑어머니",
-    },
-    brideFather: {
-      bank: "은행명",
-      number: "999-000-111222",
-      holder: "신부아버지",
-    },
-    brideMother: {
-      bank: "은행명",
-      number: "333-444-555666",
-      holder: "신부어머니",
-    }
-  },
-
   // RSVP 설정
   rsvp: {
     enabled: false, // RSVP 섹션 표시 여부
@@ -160,6 +110,6 @@ export const weddingConfig = {
   slack: {
     webhookUrl: process.env.NEXT_PUBLIC_SLACK_WEBHOOK_URL || "",
     channel: "#wedding-response",
-    compactMessage: true, // 슬랙 메시지를 간결하게 표시
+    compactMessage: false, // 슬랙 메시지를 간결하게 표시
   },
 }; 

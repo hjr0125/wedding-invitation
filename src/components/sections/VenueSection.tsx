@@ -2,12 +2,11 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import dynamic from 'next/dynamic';
 import { weddingConfig } from '../../config/wedding-config';
 
 declare global {
   interface Window {
-    naver: any;
+    kakao: any;
   }
 }
 
@@ -30,57 +29,43 @@ const VenueSection = ({ bgColor = 'white' }: VenueSectionProps) => {
   const [mapLoaded, setMapLoaded] = useState(false);
   const [debugInfo, setDebugInfo] = useState<string>('');
   const [mapError, setMapError] = useState(false);
-  // 배차 안내 펼침/접기 상태 관리
-  const [expandedShuttle, setExpandedShuttle] = useState<'groom' | 'bride' | null>(null);
-  
-  // 배차 안내 펼침/접기 토글 함수
-  const toggleShuttle = (shuttle: 'groom' | 'bride') => {
-    if (expandedShuttle === shuttle) {
-      setExpandedShuttle(null);
-    } else {
-      setExpandedShuttle(shuttle);
-    }
-  };
-  
   // 디버깅 정보 출력
   useEffect(() => {
-    const clientId = process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID || '';
-    const debug = `클라이언트 ID: ${clientId.substring(0, 3)}...`;
+    const appKey = process.env.NEXT_PUBLIC_KAKAO_MAP_APP_KEY || '';
+    const debug = `앱 키: ${appKey.substring(0, 3)}...`;
     setDebugInfo(debug);
   }, []);
   
-  // 네이버 지도 API 스크립트 동적 로드
+  // 카카오 지도 API 스크립트 동적 로드
   useEffect(() => {
-    const loadNaverMapScript = () => {
-      if (window.naver && window.naver.maps) {
+    const loadKakaoMapScript = () => {
+      if (window.kakao && window.kakao.maps) {
         setMapLoaded(true);
         return;
       }
-      
+
       const script = document.createElement('script');
       script.async = true;
-      // 네이버 지도 API는 geocoder를 별도로 로드해야 합니다
-      script.src = `https://openapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID}`;
+      script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_APP_KEY}&autoload=false`;
       script.onload = () => {
-        console.log('네이버 지도 스크립트 로드 완료');
-        setMapLoaded(true);
+        if (!window.kakao || !window.kakao.maps) {
+          setMapError(true);
+          return;
+        }
+
+        window.kakao.maps.load(() => {
+          console.log('카카오 지도 스크립트 로드 완료');
+          setMapLoaded(true);
+        });
       };
       script.onerror = (error) => {
-        console.error('네이버 지도 스크립트 로드 실패:', error);
+        console.error('카카오 지도 스크립트 로드 실패:', error);
         setMapError(true);
       };
       document.head.appendChild(script);
-      
-      // 인증 오류 확인을 위한 타임아웃 설정
-      setTimeout(() => {
-        if (document.querySelector('div[style*="position: absolute; z-index: 100000000"]')) {
-          console.log('네이버 지도 인증 오류 발견');
-          setMapError(true);
-        }
-      }, 3000);
     };
 
-    loadNaverMapScript();
+    loadKakaoMapScript();
     
     // 컴포넌트 언마운트 시 맵 제거
     return () => {
@@ -90,44 +75,41 @@ const VenueSection = ({ bgColor = 'white' }: VenueSectionProps) => {
     };
   }, []);
   
-  // 네이버 지도 초기화
+  // 카카오 지도 초기화
   useEffect(() => {
     if (!mapLoaded || !mapRef.current || mapError) return;
     
     const initMap = () => {
       try {
-        console.log('네이버 지도 초기화 시작');
+        console.log('카카오 지도 초기화 시작');
         
         // 기본 좌표 (서울 시청) - 주소 검색 전 기본값
-        const defaultLocation = new window.naver.maps.LatLng(37.5666805, 126.9784147);
+        const defaultLocation = new window.kakao.maps.LatLng(37.5666805, 126.9784147);
+        const mapLevel = weddingConfig.venue.kakaoMapLevel ?? 4;
         
         // 지도 생성
-        const map = new window.naver.maps.Map(mapRef.current, {
+        const map = new window.kakao.maps.Map(mapRef.current, {
           center: defaultLocation,
-          zoom: parseInt(weddingConfig.venue.mapZoom, 10) || 15,
-          zoomControl: true,
-          zoomControlOptions: {
-            position: window.naver.maps.Position.RIGHT_TOP
-          }
+          level: mapLevel,
         });
         
-        console.log('네이버 지도 객체 생성 성공');
+        console.log('카카오 지도 객체 생성 성공');
         
         // wedding-config.ts에서 좌표 가져오기
-        const venueLocation = new window.naver.maps.LatLng(
+        const venueLocation = new window.kakao.maps.LatLng(
           weddingConfig.venue.coordinates.latitude, 
           weddingConfig.venue.coordinates.longitude
         );
         
         // 마커 생성
-        const marker = new window.naver.maps.Marker({
+        const marker = new window.kakao.maps.Marker({
           position: venueLocation,
           map: map
         });
         
         // 인포윈도우 생성
-        const infoWindow = new window.naver.maps.InfoWindow({
-          content: `<div style="padding:10px;min-width:150px;text-align:center;font-size:14px;"><strong>${weddingConfig.venue.name}</strong></div>`
+        const infoWindow = new window.kakao.maps.InfoWindow({
+          content: `<div style="padding:8px 10px;min-width:150px;text-align:center;font-size:14px;"><strong>${weddingConfig.venue.name}</strong></div>`
         });
         
         // 마커 클릭 시 인포윈도우 표시
@@ -135,19 +117,10 @@ const VenueSection = ({ bgColor = 'white' }: VenueSectionProps) => {
         
         // 지도 중심 이동
         map.setCenter(venueLocation);
-        console.log('네이버 지도 초기화 완료');
-        
-        // 인증 오류를 감지하기 위한 추가 확인
-        setTimeout(() => {
-          const errorDiv = document.querySelector('div[style*="position: absolute; z-index: 100000000"]');
-          if (errorDiv) {
-            console.log('인증 오류 감지됨');
-            setMapError(true);
-          }
-        }, 1000);
+        console.log('카카오 지도 초기화 완료');
         
       } catch (error) {
-        console.error('네이버 지도 초기화 오류:', error);
+        console.error('카카오 지도 초기화 오류:', error);
         setMapError(true);
       }
     };
@@ -255,73 +228,6 @@ const VenueSection = ({ bgColor = 'white' }: VenueSectionProps) => {
         <TransportText>{weddingConfig.venue.parking}</TransportText>
       </ParkingCard>
       
-      {/* 신랑측 배차 안내 - 정보가 있을 때만 표시 */}
-      {weddingConfig.venue.groomShuttle && (
-        <ShuttleCard>
-          <ShuttleCardHeader onClick={() => toggleShuttle('groom')} $isExpanded={expandedShuttle === 'groom'}>
-            <CardTitle>신랑측 배차 안내</CardTitle>
-            <ExpandIcon $isExpanded={expandedShuttle === 'groom'}>
-              {expandedShuttle === 'groom' ? '−' : '+'}
-            </ExpandIcon>
-          </ShuttleCardHeader>
-          
-          {expandedShuttle === 'groom' && (
-            <ShuttleContent>
-              <ShuttleInfo>
-                <ShuttleLabel>탑승 장소</ShuttleLabel>
-                <ShuttleText>{formatTextWithLineBreaks(weddingConfig.venue.groomShuttle.location)}</ShuttleText>
-              </ShuttleInfo>
-              <ShuttleInfo>
-                <ShuttleLabel>출발 시간</ShuttleLabel>
-                <ShuttleText>{weddingConfig.venue.groomShuttle.departureTime}</ShuttleText>
-              </ShuttleInfo>
-              <ShuttleInfo>
-                <ShuttleLabel>인솔자</ShuttleLabel>
-                <ShuttleText>
-                  {weddingConfig.venue.groomShuttle.contact.name} ({weddingConfig.venue.groomShuttle.contact.tel})
-                  <ShuttleCallButton href={`tel:${weddingConfig.venue.groomShuttle.contact.tel}`}>
-                    전화
-                  </ShuttleCallButton>
-                </ShuttleText>
-              </ShuttleInfo>
-            </ShuttleContent>
-          )}
-        </ShuttleCard>
-      )}
-      
-      {/* 신부측 배차 안내 - 정보가 있을 때만 표시 */}
-      {weddingConfig.venue.brideShuttle && (
-        <ShuttleCard>
-          <ShuttleCardHeader onClick={() => toggleShuttle('bride')} $isExpanded={expandedShuttle === 'bride'}>
-            <CardTitle>신부측 배차 안내</CardTitle>
-            <ExpandIcon $isExpanded={expandedShuttle === 'bride'}>
-              {expandedShuttle === 'bride' ? '−' : '+'}
-            </ExpandIcon>
-          </ShuttleCardHeader>
-          
-          {expandedShuttle === 'bride' && (
-            <ShuttleContent>
-              <ShuttleInfo>
-                <ShuttleLabel>탑승 장소</ShuttleLabel>
-                <ShuttleText>{formatTextWithLineBreaks(weddingConfig.venue.brideShuttle.location)}</ShuttleText>
-              </ShuttleInfo>
-              <ShuttleInfo>
-                <ShuttleLabel>출발 시간</ShuttleLabel>
-                <ShuttleText>{weddingConfig.venue.brideShuttle.departureTime}</ShuttleText>
-              </ShuttleInfo>
-              <ShuttleInfo>
-                <ShuttleLabel>인솔자</ShuttleLabel>
-                <ShuttleText>
-                  {weddingConfig.venue.brideShuttle.contact.name} ({weddingConfig.venue.brideShuttle.contact.tel})
-                  <ShuttleCallButton href={`tel:${weddingConfig.venue.brideShuttle.contact.tel}`}>
-                    전화
-                  </ShuttleCallButton>
-                </ShuttleText>
-              </ShuttleInfo>
-            </ShuttleContent>
-          )}
-        </ShuttleCard>
-      )}
     </VenueSectionContainer>
   );
 };
@@ -500,11 +406,6 @@ const Card = styled.div`
 
 const TransportCard = styled(Card)``;
 const ParkingCard = styled(Card)``;
-const ShuttleCard = styled(Card)`
-  padding: 0;
-  overflow: hidden;
-`;
-
 const CardTitle = styled.h4`
   font-weight: 500;
   margin-bottom: 1rem;
@@ -524,87 +425,6 @@ const TransportText = styled.p`
   font-size: 0.875rem;
   color: var(--text-medium);
   white-space: pre-line;
-`;
-
-const ShuttleInfo = styled.div`
-  margin-bottom: 1rem;
-  
-  &:last-child {
-    margin-bottom: 0;
-  }
-`;
-
-const ShuttleLabel = styled.p`
-  font-weight: 500;
-  font-size: 0.875rem;
-`;
-
-const ShuttleText = styled.p`
-  font-size: 0.875rem;
-  color: var(--text-medium);
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-`;
-
-const ShuttleCallButton = styled.a`
-  background-color: var(--secondary-color);
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 0.2rem 0.5rem;
-  font-size: 0.8rem;
-  text-decoration: none;
-  margin-left: 0.5rem;
-  position: relative;
-  overflow: hidden;
-  
-  &:active {
-    transform: translateY(1px);
-  }
-  
-  &:after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 5px;
-    height: 5px;
-    background: rgba(255, 255, 255, 0.5);
-    opacity: 0;
-    border-radius: 100%;
-    transform: scale(1, 1) translate(-50%);
-    transform-origin: 50% 50%;
-  }
-  
-  &:active:after {
-    animation: ripple 0.6s ease-out;
-  }
-`;
-
-const ShuttleCardHeader = styled.div<{ $isExpanded: boolean }>`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.5rem;
-  cursor: pointer;
-  border-bottom: ${props => props.$isExpanded ? '1px solid #eee' : 'none'};
-  
-  h4 {
-    margin: 0;
-  }
-`;
-
-const ExpandIcon = styled.span<{ $isExpanded: boolean }>`
-  font-size: 1.5rem;
-  line-height: 1;
-  color: var(--secondary-color);
-  transition: transform 0.3s ease;
-  transform: ${props => props.$isExpanded ? 'rotate(0deg)' : 'rotate(0deg)'};
-`;
-
-const ShuttleContent = styled.div`
-  padding: 1rem 1.5rem 1.5rem;
 `;
 
 export default VenueSection; 
