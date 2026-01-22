@@ -19,7 +19,7 @@ export const weddingConfig = {
   meta: {
     title: "한재륜 ❤️ 박세화 결혼합니다",
     description: "1월 31일 11시 30분",
-    ogImage: withSiteUrl("/images/ha0h-1fsi-bqt3.jpg"),
+    ogImage: withSiteUrl("/images/1.jpeg"),
     noIndex: true,
     _jwk_watermark_id: uniqueIdentifier,
   },
@@ -34,7 +34,7 @@ export const weddingConfig = {
   // 메인 화면
   main: {
     title: "Wedding Invitation",
-    image: withBasePath("/images/ha0h-1fsi-bqt3.jpg"),
+    image: withBasePath("/images/1.jpeg"),
     date: "2026년 1월 31일\n11시 30분",
     venue: "까델루뽀"
   },
